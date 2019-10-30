@@ -1,0 +1,10 @@
+.buttons{
+    display: flex;
+    flex-wrap: wrap;
+    border: 2px solid black;
+}
+
+.icons {
+    display: inline;
+    padding-left: 10px;
+}

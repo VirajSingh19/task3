@@ -1,0 +1,17 @@
+.topdiv{
+    border: 2px solid black;
+    width: 80%;
+}
+
+.tab{
+    border: 2px solid black;
+    width: 100%;
+}
+
+
+@media only screen and (max-width: 600px) {
+  
+    .topdiv{
+        width: 55%;
+    }
+}
