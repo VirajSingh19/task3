@@ -8,6 +8,14 @@ export function list(state = seed , action) {
     switch (action.type) {
         case ADD_ITEMS:
           return state;
+        case DELETE_ITEMS:
+          const newState = [];
+          for(let item of state) {
+            if(!action.items.find(deleteId=> item.id===deleteId)){
+              newState.push(item);
+            }
+          }
+          return [...newState];
         default:
           return state;
       }

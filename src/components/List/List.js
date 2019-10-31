@@ -15,12 +15,12 @@ class List extends Component {
     constructor() {
       super();
       this.state={
+        // local state to handle multiple selctions and unselections
         clicked: new Set()
       }
     }
 
     render() {
-      console.log('props',this.props);
       const that = this;
       
     
