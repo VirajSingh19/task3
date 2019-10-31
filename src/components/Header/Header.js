@@ -17,7 +17,7 @@ class Header extends Component {
                             <i className="icons fa fa-pencil" aria-hidden="true"/>
                         </Button>
                         <Button className="mr3" variant="danger">Delete
-                              <i className="icons fa fa-trash-o" aria-hidden="true" onClick={this.handleDelete}/> 
+                              <i className="icons fa fa-trash-o" aria-hidden="true"/> 
                         </Button>
                       
                 </ButtonToolbar>
