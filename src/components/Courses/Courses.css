@@ -1,0 +1,9 @@
+.buttons{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.icons {
+    display: inline;
+    padding-left: 10px;
+}

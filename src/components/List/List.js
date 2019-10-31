@@ -48,12 +48,14 @@ class List extends Component {
             clickToSelect: true 
           };
         return (
-            <BootstrapTable data={List} options={options} selectRow={ selectRowProp } striped hover>
-            <TableHeaderColumn isKey dataField='title' filter={ { type: 'TextFilter', delay: 10 } }  >Title</TableHeaderColumn>
-            <TableHeaderColumn  dataField='length'  >Length</TableHeaderColumn>  
-            <TableHeaderColumn  dataField='category' filter={ { type: 'TextFilter', delay: 10 } }  >Category</TableHeaderColumn>
-            <TableHeaderColumn  dataField='author' filter={ { type: 'TextFilter', delay: 10 } }  >Author</TableHeaderColumn>     
-        </BootstrapTable>            
+            <div className="pa2">
+            <BootstrapTable  data={List} options={options} selectRow={ selectRowProp } striped hover>
+                <TableHeaderColumn isKey dataField='title' filter={ { type: 'TextFilter', delay: 10 } }  >Title</TableHeaderColumn>
+                <TableHeaderColumn  dataField='length'  >Length</TableHeaderColumn>  
+                <TableHeaderColumn  dataField='category' filter={ { type: 'TextFilter', delay: 10 } }  >Category</TableHeaderColumn>
+                <TableHeaderColumn  dataField='author' filter={ { type: 'TextFilter', delay: 10 } }  >Author</TableHeaderColumn>     
+            </BootstrapTable>            
+            </div>
         );
     }
 }

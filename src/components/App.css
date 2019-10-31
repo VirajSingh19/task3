@@ -2,18 +2,20 @@
     box-sizing: border-box;
     padding: 0.2%;
     margin: 0;
+    padding: 0;
 }
 
 
 .app {
     display: grid;
-    grid-template-rows: 5fr 11fr;
+    grid-template-rows: 2fr 5fr 11fr;
     grid-template-areas: 
-        "header" 
+        "header"
+        "courses" 
         "list"
 }
 
-.header {
+.courses {
     grid-area: header;
     background: yellow;
     border: 2px solid black;
@@ -21,4 +23,8 @@
 
 .list {
     grid-area: list;
+}
+
+.header {
+    grid-area: header;
 }
