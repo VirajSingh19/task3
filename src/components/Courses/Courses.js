@@ -45,7 +45,22 @@ class Courses extends Component {
         ToastsStore.info("Deleted");   
     }
 
+    componentDidMount() {
+        const {type,message} = this.props.notification;
+        if(message) {
+            switch (type) {
+                case "SUCESS":
+                    ToastsStore.success(message);              
+                    break;
+                case "ERROR":
+                    ToastsStore.error(message);              
+                    break;       
+                default:
+                    break;
+            }
 
+        }
+    }
 
 
     render() {
@@ -100,7 +115,8 @@ class Courses extends Component {
 
 function mapStateToProps(state) {
     return {
-      selected: state.selected
+      selected: state.selected,
+      notification: state.notification
     };
   }
   

@@ -1,13 +1,20 @@
 import { combineReducers } from "redux";
 import seed from "../data/data";
 
-import {DELETE_ITEMS, ADD_ITEMS, SELECTED, UNSELECTED} from "../actions";
+import {DELETE_ITEMS, ADD_ITEMS, SELECTED, UNSELECTED, SUCCESS} from "../actions";
 
 export function list(state = seed , action) {
     switch (action.type) {
         case ADD_ITEMS:
-          console.log('item to be added', action.items, action.items.id);
-
+          if(action.items.id) {
+            for(let i=0;i<state.length;i++) {
+              if(state[i].id===action.items.id) {
+                state[i] = action.items;
+                return [...state];
+              }
+            }
+          }
+          // else new id is to be created
           action.items.id = state[state.length-1].id+1; 
           return [...state, action.items ]; 
         case DELETE_ITEMS:
@@ -39,9 +46,19 @@ export function selected(state = [] , action) {
 }
 
 
+export function notification(state = {}, action) {
+  switch (action.type) {
+    case SUCCESS:
+      return action.item;
+    default:
+      return state;
+  }
+}
+
 const rootReducer = combineReducers({
     list,
     selected,
+    notification
 });
   
   export default rootReducer;

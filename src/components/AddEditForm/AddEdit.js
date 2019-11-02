@@ -5,7 +5,7 @@ import {Link, Redirect} from "react-router-dom";
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import {Form} from 'react-bootstrap';
 import Products from "../../data/data";
-import {addItems} from "../../actions";
+import {addItems, notificationMessage} from "../../actions";
 import './Form.css';
 class UpdateForm extends Component {
     
@@ -18,12 +18,22 @@ class UpdateForm extends Component {
             length:'',
             id:null,
             canClear:false,
-            canSubmit:false,
-            itemAdded:false
+            itemAdded:false,
+            error:false
         }
+    }
+
+
+    static getDerivedStateFromProps(props, state) {
+        if(!props.location.state) {
+            state.error = true;
+        }  
+        return null;      
     }
     
     componentDidMount() {
+        if(!this.props.location.state) return;        
+
          const formType = this.props.location.state;
          
          if(formType === 'Add')
@@ -32,18 +42,13 @@ class UpdateForm extends Component {
         this.setState({title,author,category,length,id});
     }
 
-  
+
+
     // to disable/enable clear values button
     clearValues() {
         const {title,author,category,length} = this.state;
-        if(!title || !author || !category || !length) { // if something is empty
-            this.setState({canSubmit:false});
-        }
         if(!title && !author && !category && !length){ // if every thing is empty
             this.setState({canClear:false});
-        }
-        if(title && author && category && length){ // if every thing is filled
-            this.setState({canSubmit:true});
         }
         if(title || author || category || length) { // if atleast on thing is filled
             this.setState({canClear:true});
@@ -81,12 +86,12 @@ class UpdateForm extends Component {
 			ToastsStore.warning("Enter the length!");   
 			return;
 		}
-        ToastsStore.success(`Successfully ${this.props.location.state}ed`);   
         this.props.addItems( {title,author,category,length,id});
-        
-        setTimeout(()=>{
-            this.setState({itemAdded: true});
-        },2000); // waiting for 2 sec to render success notification  
+
+        this.setState({itemAdded: true}, ()=> this.props.notificationMessage( 
+            {type: "SUCESS", message:`Successfully ${this.props.location.state}ed` }
+        )); 
+    
 	}
     
     onReset() {
@@ -110,6 +115,13 @@ class UpdateForm extends Component {
 
 
     render() {
+        if(this.state.error) {
+            this.props.notificationMessage({type:"ERROR",message:"Access Denied!"})
+
+            return <Redirect to="/" />;
+            
+        }
+
         const formType = this.props.location.state;
         return (
             <div className="pa4">
@@ -194,4 +206,4 @@ function mapStateToProps({selected, list}) {
     } 
   }
 
-export default connect(mapStateToProps,{addItems})(UpdateForm);
+export default connect(mapStateToProps,{addItems, notificationMessage})(UpdateForm);

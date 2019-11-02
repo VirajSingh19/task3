@@ -2,6 +2,7 @@ export const DELETE_ITEMS = "DELETE_ITEMS";
 export const ADD_ITEMS = "ADD_ITEMS";
 export const SELECTED = "SELECTED";
 export const UNSELECTED = "UNSELECTED";
+export const SUCCESS = "SUCCESS";
 
 export function deleteItems(items) {
   const action = {
@@ -38,4 +39,9 @@ export function unSelectItem(item) {
 }
 
 
-
+export function notificationMessage(item) {
+  return {
+    type: SUCCESS,
+    item
+  }
+}
