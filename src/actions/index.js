@@ -2,7 +2,7 @@ export const DELETE_ITEMS = "DELETE_ITEMS";
 export const ADD_ITEMS = "ADD_ITEMS";
 export const SELECTED = "SELECTED";
 export const UNSELECTED = "UNSELECTED";
-
+export const FORM_TYPE = "FORM_TYPE";
 
 export function deleteItems(items) {
   const action = {
@@ -37,3 +37,13 @@ export function unSelectItem(item) {
   };
   return action;
 }
+
+export function setFormType(item) {
+  const action = {
+    type: FORM_TYPE,
+    item,
+  };
+  return action;
+}
+
+

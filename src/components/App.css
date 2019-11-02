@@ -8,7 +8,7 @@
 
 .app {
     display: grid;
-    grid-template-rows: 2fr 5fr 11fr;
+    grid-template-rows: 2fr 18fr 11fr;
     grid-template-areas: 
         "header"
         "courses" 
