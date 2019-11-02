@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from "react-redux";
 import "./List.css";
-import {selectItem, unSelectItem} from "../../actions";
+import {selectItem, unSelectItem, unselectAll} from "../../actions";
 
 const ReactBsTable  = require('react-bootstrap-table');
 const BootstrapTable = ReactBsTable.BootstrapTable;
@@ -20,10 +20,12 @@ class List extends Component {
       }
     }
 
+    componentDidMount() {
+      this.props.unselectAll();
+    }
+
     render() {
-      const that = this;
-      
-    
+     const that = this;
      const options = {
       onRowClick: function(row) {
         const {id} = row;
@@ -68,5 +70,5 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps,{selectItem, unSelectItem}) (List);
+export default connect(mapStateToProps,{selectItem, unSelectItem, unselectAll}) (List);
 

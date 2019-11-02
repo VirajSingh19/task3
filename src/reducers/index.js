@@ -1,12 +1,13 @@
 import { combineReducers } from "redux";
 import seed from "../data/data";
 
-import {DELETE_ITEMS, ADD_ITEMS, SELECTED, UNSELECTED, SUCCESS} from "../actions";
+import {DELETE_ITEMS, ADD_ITEMS, SELECTED, UNSELECTED, SUCCESS, UNSELECTALL, CLEAR_NOTIFICATON} from "../actions";
 
 export function list(state = seed , action) {
     switch (action.type) {
         case ADD_ITEMS:
           if(action.items.id) {
+            // if item is edited
             for(let i=0;i<state.length;i++) {
               if(state[i].id===action.items.id) {
                 state[i] = action.items;
@@ -33,11 +34,15 @@ export function list(state = seed , action) {
 
 export function selected(state = [] , action) {
   switch (action.type) {
-    case SELECTED:
+    case ADD_ITEMS: 
+      return [];
+      case SELECTED:
       return [...state,action.item];
     case UNSELECTED:
        const newSelection = state.filter(id =>  id!==action.item);
        return [...newSelection];
+    case UNSELECTALL:
+      return [];
     case DELETE_ITEMS:
       return [];
     default:
@@ -50,6 +55,8 @@ export function notification(state = {}, action) {
   switch (action.type) {
     case SUCCESS:
       return action.item;
+    case CLEAR_NOTIFICATON:
+      return '';
     default:
       return state;
   }

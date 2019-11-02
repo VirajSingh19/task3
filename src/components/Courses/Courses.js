@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Redirect} from "react-router-dom";
 import './Courses.css';
 import {ButtonToolbar,Button} from 'react-bootstrap';
-import {deleteItems} from "../../actions";
+import {deleteItems, clear} from "../../actions";
 import { ToastsContainer, ToastsStore } from "react-toasts";
 
 
@@ -47,6 +47,7 @@ class Courses extends Component {
 
     componentDidMount() {
         const {type,message} = this.props.notification;
+        this.props.clear();
         if(message) {
             switch (type) {
                 case "SUCESS":
@@ -120,4 +121,4 @@ function mapStateToProps(state) {
     };
   }
   
-export default connect(mapStateToProps,{deleteItems}) (Courses);
+export default connect(mapStateToProps,{deleteItems, clear}) (Courses);
