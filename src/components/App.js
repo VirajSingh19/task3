@@ -15,6 +15,10 @@ class App extends Component {
                     <Switch>
                         <Route path="/" exact component={home} />                
                         <Route path="/new" component={Form} />
+                        <Route path="/edit" component={Form} />
+                        <Route render={ // handling invalid routes
+                            () => <h3>Route Not Found</h3>
+                        }/>
                     </Switch>
                 </div>
             </Router>

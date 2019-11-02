@@ -36,7 +36,6 @@ class List extends Component {
           clicked.add(id);
           that.props.selectItem(id);
         }
-        console.log('selected is',clicked);
       }
     };
   

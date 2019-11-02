@@ -1,34 +1,38 @@
 import React, {Component} from 'react';
 import {Button} from 'react-bootstrap';
 import { connect } from "react-redux";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import {Form} from 'react-bootstrap';
 import Products from "../../data/data";
 import {addItems} from "../../actions";
 import './Form.css';
 class UpdateForm extends Component {
-
+    
     constructor(props) {
         super(props);
-        // this.state = {
-        //     title:'',
-        //     author:'',
-        //     category:'',
-        //     length:'',
-        //     canClear:false,
-        //     canSubmit:false
-        // }
         this.state = {
-            title:'title',
-            author:'Author 1',
-            category:'c1',
-            length:'3:12',
+            title:'',
+            author:'',
+            category:'',
+            length:'',
+            id:null,
             canClear:false,
-            canSubmit:true
-		}
+            canSubmit:false,
+            itemAdded:false
+        }
+    }
+    
+    componentDidMount() {
+         const formType = this.props.location.state;
+         
+         if(formType === 'Add')
+             return;  
+        const {title,author,category,length,id} =  this.props.editItem;
+        this.setState({title,author,category,length,id});
     }
 
+  
     // to disable/enable clear values button
     clearValues() {
         const {title,author,category,length} = this.state;
@@ -45,7 +49,7 @@ class UpdateForm extends Component {
             this.setState({canClear:true});
         }
     }
-
+    
     onTitle(title) {
         this.setState({title},()=>this.clearValues());
     }
@@ -60,25 +64,29 @@ class UpdateForm extends Component {
     }
 	
 	validateFields(){
-		const {title,author,category,length} = this.state;
-		const validated = false;
-        if(!title){
+		const {title,author,category,length,id} = this.state;
+	    if(!title){
 			ToastsStore.warning("Title cannot be empty!");
-			return validated;
+			return;
         }
         else if(!author){
 			ToastsStore.warning("Select an Author!");
-			return validated;
+			return;
 		}
         else if(!category){
 			ToastsStore.warning("Enter the category!");
-			return validated;
+			return;
 		}
 		else if(!length){
 			ToastsStore.warning("Enter the length!");   
-			return validated;
+			return;
 		}
-		return !validated;
+        ToastsStore.success(`Successfully ${this.props.location.state}ed`);   
+        this.props.addItems( {title,author,category,length,id});
+        
+        setTimeout(()=>{
+            this.setState({itemAdded: true});
+        },2000); // waiting for 2 sec to render success notification  
 	}
     
     onReset() {
@@ -102,11 +110,10 @@ class UpdateForm extends Component {
 
 
     render() {
-        console.log('props are',this.props);
-		const {title,author,category,length} = this.state;
+        const formType = this.props.location.state;
         return (
             <div className="pa4">
-				<p className="f1">{!this.props.heading ? "Add" : this.props.heading }</p>
+				<p className="f1">{formType}</p>
                 <Form>
                     <Form.Group  controlId="exampleForm.ControlInput1">
                         <Form.Label>Title</Form.Label>
@@ -140,26 +147,19 @@ class UpdateForm extends Component {
                         <Form.Label>Length</Form.Label>
                         <Form.Control required type="text" value={this.state.length} onChange={(event)=>this.onLength(event.target.value)}  placeholder="Length of the course" />
                     </Form.Group>
-                            
-                    {
-                        this.state.canSubmit ? 
-                        <Link to="/">
-                                <Button onClick={()=>this.props.addItems( {title,author,category,length} )} variant="primary">
+                                              
+                    <Button className="mr2" onClick={()=>this.validateFields()} variant="primary">
                                      <i className="mr2 fa fa-paper-plane-o" aria-hidden="true" />
                                       Submit
-                                </Button>
-                        </Link>
-                        :
-                        <Button onClick={()=>this.validateFields()} variant="primary">
-                                     <i className="mr2 fa fa-paper-plane-o" aria-hidden="true" />
-                                      Submit
-                        </Button>
-                       
-                    }
-                    
-                    <Button onClick={()=>this.onReset()} disabled={!this.state.canClear} className="ml2 mr2" variant="secondary" >
-                           Clear Values
                     </Button>
+
+                    {
+                    formType === 'Add' ?
+                        <Button onClick={()=>this.onReset()} disabled={!this.state.canClear} className="mr2" variant="secondary" >
+                            Clear Values
+                        </Button>
+                            :  ""
+                    }
 
                     <Link to="/">
                         <Button  variant="secondary" >
@@ -168,6 +168,17 @@ class UpdateForm extends Component {
                     </Link>
                     
             </Form>
+            {
+                this.state.itemAdded ?  
+                <Redirect  to={{
+                            pathname: '/',
+                            state: 'Added'
+                        }}
+                    />
+                :
+                ""
+            }
+
             <ToastsContainer store={ToastsStore} />
         </div>
         );
@@ -175,10 +186,12 @@ class UpdateForm extends Component {
 }
 
 
-function mapStateToProps(state) {
+function mapStateToProps({selected, list}) {
+    const editId = selected[0]; 
+    const item = list.find(i => i.id===editId);
     return {
-      formType: state.formType
-    };
+        editItem: item
+    } 
   }
 
 export default connect(mapStateToProps,{addItems})(UpdateForm);
